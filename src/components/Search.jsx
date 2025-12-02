@@ -26,7 +26,8 @@ function Search(){
                 type="text"
                 value={search}
                 onChange={e => setSearch(e.target.value)}
-                placeholder="Введите продукт"
+                placeholder="Введіть продукт"
+                className="product-input"
             />
 
             <div className="suggestions">
