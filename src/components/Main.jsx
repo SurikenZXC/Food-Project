@@ -31,7 +31,8 @@ function Main() {
 
         <div className="buttons">
         {step > 0 && <button type="button" className="button" onClick={prevHandle}>Назад</button>}
-        <button type="button" className="button" onClick={nextHandle}>Далі</button>
+        {step < 1 && <button type="button" className="button" onClick={nextHandle}>Далі</button>}
+        {step == 1 && <button type="button" className="button" onClick={prevHandle}>Додати</button>}
         </div>
       </form>
     </main>
