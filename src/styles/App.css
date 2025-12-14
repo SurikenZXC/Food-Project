@@ -162,6 +162,20 @@ flex-direction: column;
   text-align: center;
 }
 
+.product-list:empty {
+  display: none;
+}
+
+.product-list {
+    position: absolute;
+    top: 50px;
+    right: 50px;
+    background: white;
+    color: black;
+    font-size: 1.5em;
+    padding: 5px 15px 5px 35px;
+}
+
 .suggestions {
     max-height: 200px;     /* ограничиваем высоту */
     overflow-y: auto;      /* включаем вертикальный скролл */
@@ -176,6 +190,11 @@ flex-direction: column;
     cursor: pointer;
 }
 
+.search {
+  width: max-content;
+  margin: 0 auto;
+}
+
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
     width: 60px;   
@@ -186,3 +205,4 @@ input[type=number]::-webkit-outer-spin-button {
 input[type=number] {
     -moz-appearance: textfield; 
 }
+

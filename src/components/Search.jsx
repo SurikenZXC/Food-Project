@@ -1,6 +1,6 @@
-import React, {useState, useEffect} from "react";
+import {useState, useEffect} from "react";
 
-function Search({onSelect}){
+function Search({value, onSelect}){
     const [search, setSearch] = useState("");
     const [suggestions, setSuggestions] = useState([]);
 
@@ -11,7 +11,7 @@ function Search({onSelect}){
     }
 
     const timeoutId = setTimeout(() => {
-        fetch(`http://localhost:3001/products/search?query=${search}`)
+        fetch(`${import.meta.env.VITE_API_BASE_URL}/products/search?query=${search}`)
             .then(res => res.json())
             .then(data => setSuggestions(data))
             .catch(err => console.error(err));
@@ -30,16 +30,20 @@ function Search({onSelect}){
 
     const handleSelect = item => {
         setSearch(item.product_name)
-        onSelect?.(item.product_name);
+        onSelect?.({
+            name:item.product_name,
+            unit:item.unit,
+            id:item.id
+        });
         setSuggestions([])
         setIsSuggestionVisible(false)
     }
 
     return (
-        <>
+        <div className="search">
             <input
                 type="text"
-                value={search}
+                value={value ?? search}
                 onChange={handleChange}
                 placeholder="Введіть продукт"
                 className="product-input"
@@ -56,7 +60,7 @@ function Search({onSelect}){
                     </h2>
                 ))}
             </div>
-        </>
+        </div>
     )
 
 

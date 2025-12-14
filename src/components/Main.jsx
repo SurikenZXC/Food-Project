@@ -1,20 +1,26 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import RecipeForm from "./RecipeForm";
 import ProductPickForm from "./ProductPickForm";
+import FormBlock from "./FormBlock";
+import RadioOption from "./RadioOption";
+import ProductAddForm from "./ProductAddForm.jsx"
+import Button from "./Button";
 
 function Main() {
+  const [radio, setRadio] = useState("product")
   const [step, setStep] = useState(0);
+
+  const handleRadio = e =>{setRadio(e.target.value)}
 
   const [recipeData, setRecipeData] = useState({
     recipe_name: "",
-    portions: "1",
-    category: "",
-    recipe_link: "",
-    recipe_desc: ""
+    servings: "1",
+    recipe_category: "",
+    instruction_url: "",
+    instruction: ""
   });
 
-  // теперь массив продуктов хранится в родителе
-  const [products, setProducts] = useState([]); // каждый элемент { name, quantity, unit }
+  const [products, setProducts] = useState([]);
 
   const handleChange = e => {
     const { name, value } = e.target;
@@ -27,35 +33,56 @@ function Main() {
   const handleAdd = () => {
     console.log("Recipe:", recipeData);
     console.log("Products:", products);
-    // здесь можно отправлять fetch/post на сервер
+
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/recipes`, {
+            method: "POST",
+            headers : {
+                "Content-Type": "application/json"
+            },
+            body : JSON.stringify({products: products, recipeData: recipeData})
+        })
+        .then(res => res.json())
+        .then(data => console.log(data))
+        .catch(err => console.error(err))
+  };
+  const handleClear = () => {
+    setProducts([])
+    setRecipeData({
+      recipe_name: "",
+      servings: "1",
+      recipe_category: "",
+      instruction_url: "",
+      instruction: ""
+    })
   };
 
   return (
     <main>
-      <form>
-        {step === 0 && <RecipeForm recipeData={recipeData} handleChange={handleChange} />}
+      <FormBlock label="Додати рецепт або продукт">
+        <RadioOption name="recipe-product" label="Продукт" value="product" id="radio-product" onChange={handleRadio} checked={radio == "product"}/>
+        <RadioOption name="recipe-product" label="Рецепт" value="recipe" id="radio-recipe" onChange={handleRadio} checked={radio == "recipe"}/>
+      </FormBlock>
+      { radio == "recipe" && (<>
+      {step === 0 && <RecipeForm recipeData={recipeData} handleChange={handleChange} />}
         {step === 1 && (
           <ProductPickForm products={products} setProducts={setProducts} />
         )}
 
-        <div className="buttons">
-          {step > 0 && (
-            <button type="button" className="button" onClick={prevHandle}>
-              Назад
-            </button>
-          )}
-          {step < 1 && (
-            <button type="button" className="button" onClick={nextHandle}>
-              Далі
-            </button>
-          )}
-          {step === 1 && (
-            <button type="button" className="button" onClick={handleAdd}>
-              Додати
-            </button>
-          )}
-        </div>
-      </form>
+      <div className="buttons">
+        {step > 0 && <Button onClick={prevHandle}>Назад</Button>}
+        {step < 1 && <Button onClick={nextHandle}>Далі</Button>}
+        {step === 1 && (
+          <div>
+            <Button onClick={handleAdd}>Додати рецепт</Button>
+            <Button onClick={handleClear}>Скасувати усе</Button>
+          </div>
+        )}
+      </div>
+      </>
+      )
+      }
+      {radio == "product" && <ProductAddForm></ProductAddForm>}
+
     </main>
   );
 }

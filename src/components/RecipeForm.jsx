@@ -1,16 +1,10 @@
-import React from "react";
 import FormBlock from "./FormBlock";
-import RadioOption from "./RadioOption";
+
 import SelectField from "./SelectField";
 
 function RecipeForm({ recipeData, handleChange }) {
   return (
     <>
-      <FormBlock label="Додати рецепт або продукт">
-        <RadioOption name="recipe-product" label="Продукт" value="product" />
-        <RadioOption name="recipe-product" label="Рецепт" value="recipe" />
-      </FormBlock>
-
       <FormBlock label="Назва рецепту">
         <input
           type="text"
@@ -25,16 +19,16 @@ function RecipeForm({ recipeData, handleChange }) {
           <input
             type="number"
             min="1"
-            name="portions"
-            value={recipeData.portions}
+            name="servings"
+            value={recipeData.servings}
             onChange={handleChange}
           />
         </FormBlock>
 
         <SelectField
           label="Категорія"
-          name="category"
-          value={recipeData.category}
+          name="recipe_category"
+          value={recipeData.recipe_category}
           onChange={handleChange}
           options={[
             { value: "veg", label: "Овочі" },
@@ -47,8 +41,8 @@ function RecipeForm({ recipeData, handleChange }) {
       <FormBlock label="Посилання на рецепт" direction="horizontal">
         <input
           type="text"
-          name="recipe_link"
-          value={recipeData.recipe_link}
+          name="instruction_url"
+          value={recipeData.instruction_url}
           onChange={handleChange}
         />
       </FormBlock>
@@ -56,8 +50,8 @@ function RecipeForm({ recipeData, handleChange }) {
       <FormBlock label="Текст рецепту" direction="horizontal">
         <input
           type="text"
-          name="recipe_desc"
-          value={recipeData.recipe_desc}
+          name="instruction"
+          value={recipeData.instruction}
           onChange={handleChange}
         />
       </FormBlock>
