@@ -69,6 +69,8 @@ function ProductPickForm({ products, setProducts }) {
       <Search
         value={currentProduct.name}
         onSelect={handleNameSelect}
+        urlName="products"
+        placeholder="Введіть продукт"
       />
 
       <FormBlock label="Кількість продукту" direction="horizontal">

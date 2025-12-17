@@ -1,6 +1,6 @@
 import {useState, useEffect} from "react";
 
-function Search({value, onSelect, urlName, inputClassName = "product-input", placeholder = "Введіть щось"}){
+function SearchTag({value, onSelect, urlName, inputClassName = "product-input", placeholder = "Введіть щось"}){
     const [search, setSearch] = useState("");
     const [suggestions, setSuggestions] = useState([]);
 
@@ -23,17 +23,16 @@ function Search({value, onSelect, urlName, inputClassName = "product-input", pla
     const handleChange = e => {
         setIsSuggestionVisible(true)
         setSearch(e.target.value)
-        onSelect?.(e.target.value);
+        onSelect?.({ id: null, name: e.target.value });
     }
 
     const[isSuggestionVisible, setIsSuggestionVisible] = useState(true)
 
     const handleSelect = item => {
-        setSearch(item.product_name)
+        setSearch(item.name)
         onSelect?.({
-            name:item.product_name,
-            unit:item.unit,
-            id:item.id
+            id:item.id,
+            name:item.name,
         });
         setSuggestions([])
         setIsSuggestionVisible(false)
@@ -52,11 +51,11 @@ function Search({value, onSelect, urlName, inputClassName = "product-input", pla
             <div className="suggestions">
                 {suggestions.map(item => (
                     <h2 style={{display: isSuggestionVisible ? "block" : "none"}}
-                    className="hint" 
-                    key={item.id} 
+                    className="hint"
+                    key={item.id}
                     onClick={() => handleSelect(item)}
                     >
-                        {item.product_name}
+                        {item.name}
                     </h2>
                 ))}
             </div>
@@ -66,4 +65,4 @@ function Search({value, onSelect, urlName, inputClassName = "product-input", pla
 
 }
 
-export default Search;
+export default SearchTag;

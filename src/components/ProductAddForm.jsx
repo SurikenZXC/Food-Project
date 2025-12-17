@@ -2,14 +2,33 @@ import { useState } from "react"
 import FormBlock from "./FormBlock"
 import SelectField from "./SelectField"
 import Button from "./Button"
+import SearchTag from "./SearchTag"
 
 function ProductAddForm(){
     const [product, setProduct] = useState({
         name: "",
         unit: "kg",
         price: 0,
-        desc: ""
+        desc: "",
     })
+
+    const [tag, setTag] = useState({
+        id:[],
+        name: "",
+    })
+
+    const showTags = ()=>{
+        console.log(tag)
+    }
+
+    const handleNameSelect = tag => {
+
+        setTag(prev => ({
+            ...prev,
+            name: tag.name ?? prev.name,
+            id: tag.id != null ? [...prev.id, tag.id] : prev.id,
+        }));
+    };
 
     const handleChange = e => {
         const { name, value } = e.target;
@@ -53,6 +72,21 @@ function ProductAddForm(){
             { value: "l", label: "Л" },
           ]}
         /> 
+
+        <SearchTag
+            value={tag.name}
+            onSelect={handleNameSelect}
+            urlName="product-tags"
+            placeholder="Введіть теги"
+        />
+        {/* {
+            tag.map((item, index) => {
+                <ol>
+                    <li key={index}>{item}</li>
+                </ol>
+            })
+
+        } */}
         <FormBlock label="Ціна" direction="horizontal">
             <input
             type="number"
@@ -71,6 +105,7 @@ function ProductAddForm(){
             />
         </FormBlock>
           <Button onClick={addProduct}>Додати</Button>
+          <Button onClick={showTags}>Додати</Button>
         </>
     )
 }
