@@ -23,7 +23,7 @@ function SearchTag({value, onSelect, urlName, inputClassName = "product-input", 
     const handleChange = e => {
         setIsSuggestionVisible(true)
         setSearch(e.target.value)
-        onSelect?.({ id: null, name: e.target.value });
+        onSelect?.({ id: null, currentName: e.target.value });
     }
 
     const[isSuggestionVisible, setIsSuggestionVisible] = useState(true)
@@ -32,7 +32,8 @@ function SearchTag({value, onSelect, urlName, inputClassName = "product-input", 
         setSearch(item.name)
         onSelect?.({
             id:item.id,
-            name:item.name,
+            currentName:item.name,
+            names: item.name
         });
         setSuggestions([])
         setIsSuggestionVisible(false)

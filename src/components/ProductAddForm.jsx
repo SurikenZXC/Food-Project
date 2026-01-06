@@ -12,9 +12,20 @@ function ProductAddForm(){
         desc: "",
     })
 
+    // const deleteTag = (indexToDelete) => {
+        
+    //     setTag(prev => ({
+    //         ...prev,
+    //         names: prev.names.splice(indexToDelete, 1),
+    //         id: prev.id.splice(indexToDelete, 1),
+    //     }));
+    //     console.log(tag)
+    // }
+
     const [tag, setTag] = useState({
         id:[],
-        name: "",
+        names: [],
+        currentName: "",
     })
 
     const showTags = ()=>{
@@ -25,7 +36,8 @@ function ProductAddForm(){
 
         setTag(prev => ({
             ...prev,
-            name: tag.name ?? prev.name,
+            currentName: tag.currentName ?? prev.currentName,
+            names: tag.names != null ? [...prev.names, tag.names] : prev.names,
             id: tag.id != null ? [...prev.id, tag.id] : prev.id,
         }));
     };
@@ -41,7 +53,7 @@ function ProductAddForm(){
             headers : {
                 "Content-Type": "application/json"
             },
-            body : JSON.stringify(product)
+            body : JSON.stringify({product, tag})
         })
         .then(res => res.json())
         .then(data => console.log(data))
@@ -72,21 +84,20 @@ function ProductAddForm(){
             { value: "l", label: "Л" },
           ]}
         /> 
-
+        
         <SearchTag
-            value={tag.name}
+            value={tag.currentName}
             onSelect={handleNameSelect}
             urlName="product-tags"
             placeholder="Введіть теги"
         />
-        {/* {
-            tag.map((item, index) => {
-                <ol>
-                    <li key={index}>{item}</li>
-                </ol>
-            })
-
-        } */}
+        <div>
+                {
+                    tag.names.map((item, index) => (
+                    <span className="tag-element" key={tag.id[index]} >{item}</span>
+            ))
+}
+</div>
         <FormBlock label="Ціна" direction="horizontal">
             <input
             type="number"
